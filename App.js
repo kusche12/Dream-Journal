@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
-import DetailScreen from './screens/DetailScreen';
+import UserScreen from './screens/UserScreen';
+import CreateScreen from './screens/CreateScreen';
 import LoadingScreen from './screens/LoadingScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import data from './api/dreamData.json';
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [dreams, setDreams] = useState(data);
@@ -23,11 +25,13 @@ const App = () => {
     )
   } else {
     return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} initialParams={{dreams: dreams}} />
-        <Stack.Screen name="Detail" component={DetailScreen} />
-      </Stack.Navigator>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Home" component={HomeScreen} initialParams={{dreams}}/>
+          <Tab.Screen name="Create" component={CreateScreen} />
+          <Tab.Screen name="Profile" component={UserScreen} />
+          <Tab.Screen name="Settings" component={SettingsScreen} />
+        </Tab.Navigator>
     </NavigationContainer>
   );
   }

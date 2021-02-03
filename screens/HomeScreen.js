@@ -1,24 +1,50 @@
 import * as React from 'react';
-import DreamListView from '../components/DreamListView';
-import date from 'date-and-time';
-import { SafeAreaView, Text, TouchableOpacity, FlatList } from 'react-native';
+import CreateScreen from '../screens/CreateScreen';
+import HomeListScreen from '../screens/HomeListScreen';
+import DetailScreen from '../screens/DetailScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
+import home from '../styles/homestyles';
 
-// TODO: Display the FlatList. Get it to actually show.
+const Stack = createStackNavigator();
+
 const HomeScreen = ({ route }) => {
-    const dreams = route.params.dreams;
-    const renderItem = ({ item }) => (
-        <DreamListView dream={item} />
-    )
-
     return (
-      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Hello, world</Text>
-            <FlatList 
-                data={dreams}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
+        <Stack.Navigator screenOptions={{
+            headerStyle: { backgroundColor: 'tan' }
+        }}>
+            <Stack.Screen
+                name="Home"
+                component={HomeListScreen}
+                initialParams={route.params} 
+                options={({ navigation }) => ({
+                    title: 'Dream Journal',
+                    headerRight: () => (
+                        <TouchableOpacity style={ home.headerRight }onPress={() => navigation.navigate('Create')}>
+                            <Ionicons name="md-create-outline" size={24} color="black" />
+                        </TouchableOpacity>
+                    )
+                })}
+                />
+            <Stack.Screen
+                name="Create"
+                component={CreateScreen}
+                options={({ navigation }) => ({
+                    headerRight: () => (
+                        <TouchableOpacity style={ home.headerRight }onPress={() => navigation.navigate('Home')}>
+                            <Feather name="check-circle" size={22} color="black" />
+                        </TouchableOpacity>
+                    )
+                })}
+
             />
-      </SafeAreaView>
+            <Stack.Screen
+                name="Detail"
+                component={DetailScreen}
+            />
+        </Stack.Navigator>
     );
 }
 
